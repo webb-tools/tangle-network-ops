@@ -1,4 +1,4 @@
 
 ssh_home: "{{ ansible_env.HOME }}/.ssh"
 git_repo: "https://github.com/webb-tools/dkg-substrate.git"
-git_branch: "parachain-testing"
+git_branch: "master"
