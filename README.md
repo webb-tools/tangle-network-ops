@@ -1,6 +1,6 @@
-# Secure DKG node setup
+# Secure DKG node setup - *not fully secured yet*🙃
 
-❗**Current development should be considered a work in progress.**
+❗ **Current development should be considered a work in progress.**
 
 ## Setting up a DKG Node
 
@@ -14,17 +14,19 @@ Ensure that you chose the right AWS region.
 
 ### Building AWS Infra
 
+> TODO: add scripts for bucket and table creation
+
 From the root directory, you should first set-up an AWS account and [create a bucket](https://docs.aws.amazon.com/quickstarts/latest/s3backup/step-1-create-bucket.html) to store your terraform state. You must remember to do the following steps:
-- Click create bucket. 
+- Click create bucket 
 - Name the bucket something you will remember
-- Then ensure you choose the correct region
-- Then just the bucket with all the default settings.
+- Ensure you choose the correct region
+- Use the default settings
 
 Then [create a dynamodb table](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/getting-started-step-1.html) to manage state locks. This requires that you do:
 - Go to dynamodb and click create table
 - Name the bucket something you will remember
 - Name the primary key `LockID` and keep as string
-- Keep default settings checked off and click create
+- Keep default settings and create
 
 **Then run:**
 
@@ -129,6 +131,18 @@ ansible-playbook -i hosts --ssh-extra-args "-F ./ssh_config" ansible/playbooks/c
 > Note - this will take about 30 or more minutes to compile, specifically the compiling of the dkg-node is what takes super long.
 > You can expect around 200 retries. 
 
+#### See node logs
+
+To view full node logs:
+```
+ansible-playbook -i hosts --ssh-extra-args "-F ./ssh_config" ansible/playbooks/peek_logs.yml
+```
+
+To view authority node logs:
+```
+ansible-playbook -i hosts --ssh-extra-args "-F ./ssh_config" ansible/playbooks/peek_logs_full.yml
+```
+
 # Restarting the whole infrastructure
 
 You may run into a scenario where you want to start from a clean slate. See steps below:
@@ -149,7 +163,3 @@ You may run into a scenario where you want to start from a clean slate. See step
   can always double check with `ssh-add -L`
 - If you change the ssh key you use, you will have to configure the new one, the same way you did
   before. And you will have to make sure you rename the commands to match this new ssh key file
-
-
-
-After doing all of that, you can start again from the top of the README with `terraform init`.
