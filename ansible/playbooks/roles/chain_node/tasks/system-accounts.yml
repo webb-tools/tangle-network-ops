@@ -1,0 +1,17 @@
+
+- name: add DKG group
+  group:
+    name: dkg
+  become: true
+  tags:
+    system-accounts
+
+- name: add DKG user
+  user:
+    name: dkg
+    comment: dkg User
+    group: dkg
+  become: true
+  tags:
+    system-accounts
+

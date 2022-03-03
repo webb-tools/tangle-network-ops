@@ -1,0 +1,10 @@
+
+- hosts:
+    - full_node
+    - authority_node
+  tasks:
+    - name: start DKG service
+      become: true
+      systemd:
+        name: dkg.service
+        state: started

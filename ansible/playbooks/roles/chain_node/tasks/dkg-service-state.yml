@@ -1,0 +1,4 @@
+
+- name: restart DKG
+  systemd: 'state={{ dkg_service_state }} name=dkg daemon_reload=yes'
+  become: true

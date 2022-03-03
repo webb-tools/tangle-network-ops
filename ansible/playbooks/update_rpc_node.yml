@@ -1,0 +1,19 @@
+- hosts:
+    - full_node
+  tasks:
+    - name: stop dkg service
+      become: true
+      systemd:
+        name: dkg.service
+        state: stopped
+
+    - include_role:
+        name: chain_node
+        tasks_from: build-chain.yml
+
+    - name: start dkg service
+      become: true
+      systemd:
+        name: dkg.service
+        state: started
+      

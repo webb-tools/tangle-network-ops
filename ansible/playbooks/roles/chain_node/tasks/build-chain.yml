@@ -1,0 +1,42 @@
+- name: checkout dkg
+  git:
+    repo: '{{ git_repo }}'
+    dest: '{{ dkg_home }}'
+    version: '{{ git_branch }}'
+    force: true
+    accept_hostkey: yes
+  tags:
+    - build-chain
+    - rebuild-chain
+
+- name: compile dkg
+  command:
+    cmd: '{{ cargo_bin }} +nightly build --release -p dkg-standalone-node'
+    chdir: '{{ dkg_home }}'
+  async: 3600
+  poll: 0
+  register: dkg
+  tags:
+    - build-chain
+    - rebuild-chain
+
+- name: compile dkg - check async status
+  async_status: jid={{ dkg.ansible_job_id }}
+  register: job_result
+  until: job_result.finished
+  retries: 1000
+  delay: 10
+  tags:
+    - build-chain
+    - rebuild-chain
+
+- name: change dkg-node bin owner to dkg-node
+  file:
+    path: '{{ dkg_bin }}'
+    owner: dkg
+    group: dkg
+    mode: '0744'
+    state: file
+  become: true
+  tags:
+    - build-chain
