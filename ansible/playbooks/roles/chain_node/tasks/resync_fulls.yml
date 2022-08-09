@@ -1,32 +1,32 @@
 
-- name: stop DKG service
-  when: "'full_node' in group_names"
+- name: stop Tangle collator service
+  when: "'collator_node' in group_names"
   become: true
   systemd:
-    name: dkg.service
+    name: tangle-collator.service
     state: stopped
 
 - name: purge chain
   become: true
-  when: "'full_node' in group_names"
+  when: "'collator_node' in group_names"
   shell: |
     set -o pipefail
-    {{ dkg_bin }} purge-chain -y --chain "{{ dkg_user_home }}/arana_testnet_raw.json" --base-path {{ chain_data_dir }}  --database paritydb-experimental
+    {{ tangle_bin }} purge-chain -y --chain "{{ tangle_user_home }}/arana_testnet_raw.json" --base-path {{ chain_data_dir }}  --database paritydb-experimental
   args:
     executable: /bin/bash
   changed_when: False
 
-- name: reinstall DKG systemd unit file (full node)
-  template: src=dkg-full-node.j2 dest=/etc/systemd/system/dkg.service
+- name: reinstall DKG systemd unit file (collator node)
+  template: src=dkg-collator-node.j2 dest=/etc/systemd/system/dkg.service
   become: true
-  when: "'full_node' in group_names"
+  when: "'collator_node' in group_names"
   vars:
-    peers: "{{ groups['authority_node'] }}"
+    peers: "{{ groups['collator_node'] }}"
   tags:
-    dkg-service
+    collator-node-service
 
 # - name: start dkg service
-#   when: "'full_node' in group_names"
+#   when: "'collator_node' in group_names"
 #   become: true
 #   systemd:
 #     name: dkg.service

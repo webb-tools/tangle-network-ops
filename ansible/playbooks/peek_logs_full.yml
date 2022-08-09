@@ -1,12 +1,12 @@
 ---
- - name: peek full logs
+ - name: peek collator logs
    hosts: 
-      - full_node
+      - collator_node
    tasks:
-      - name: peep full logs
+      - name: peep collator logs
         shell: |
           set -o pipefail
-          journalctl -u dkg --no-pager > /root/dkg.log
+          journalctl -u tangle --no-pager > /root/tangle.log
           tail -n 100 /root/dkg.log
         become: yes
         args:
@@ -20,5 +20,5 @@
 
       - name: remove log
         file:
-          path: /root/dkg.log
+          path: /root/tangle.log
           state: absent

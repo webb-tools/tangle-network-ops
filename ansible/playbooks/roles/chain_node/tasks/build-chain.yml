@@ -9,19 +9,19 @@
     - build-chain
     - rebuild-chain
 
-- name: compile dkg
+- name: compile tangle-collator node
   command:
-    cmd: '{{ cargo_bin }} +nightly build --release -p dkg-standalone-node'
-    chdir: '{{ dkg_home }}'
+    cmd: '{{ cargo_bin }} +nightly build --release -p tangle-collator'
+    chdir: '{{ tangle_home }}'
   async: 3600
   poll: 0
-  register: dkg
+  register: tangle
   tags:
     - build-chain
     - rebuild-chain
 
-- name: compile dkg - check async status
-  async_status: jid={{ dkg.ansible_job_id }}
+- name: compile tangle-node - check async status
+  async_status: jid={{ tangle.ansible_job_id }}
   register: job_result
   until: job_result.finished
   retries: 1000
@@ -30,11 +30,11 @@
     - build-chain
     - rebuild-chain
 
-- name: change dkg-node bin owner to dkg-node
+- name: change tangle-node bin owner to tangle-node
   file:
-    path: '{{ dkg_bin }}'
-    owner: dkg
-    group: dkg
+    path: '{{ tangle_bin }}'
+    owner: tangle
+    group: tangle
     mode: '0744'
     state: file
   become: true

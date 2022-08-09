@@ -32,7 +32,7 @@
         var: has_key
 
     
-    - name: check gran key
+    - name: check wdkg key
       uri:
         url: http://localhost:9933
         method: "POST"
@@ -43,12 +43,12 @@
               "id":1,
               "method":"author_hasKey",
               "params": [
-                  "{{ grandpa_public_key }}",
-                  "gran"
+                  "{{ dkg_public_key }}",
+                  "wdkg"
               ]
             }
-      register: has_gran_key
-      until: has_gran_key.status == 200
+      register: dkg_gran_key
+      until: dkg_gran_key.status == 200
       retries: 10
       delay: 5
 

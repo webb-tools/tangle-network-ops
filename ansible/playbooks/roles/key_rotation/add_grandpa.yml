@@ -1,5 +1,5 @@
 
-- name: add grandpa author key to keystore
+- name: add dkg key to keystore
   uri:
     url: http://localhost:9933
     method: "POST"
@@ -12,7 +12,7 @@
             "params": [
                 "gran",
                 "{{ mnemonic }}",
-                "{{ grandpa_public_key }}"
+                "{{ dkg_public_key }}"
             ]
         }
   register: insertion
@@ -20,6 +20,6 @@
   retries: 10
   delay: 5
 
-- name: show erpsonse
-    debug:
-        var: insertion
+- name: show response
+  debug:
+    var: insertion

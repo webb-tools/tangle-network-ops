@@ -6,8 +6,8 @@
       - name: peep logs
         shell: |
           set -o pipefail
-          journalctl -u dkg --no-pager > /root/dkg.log
-          tail -n 10000 /root/dkg.log
+          journalctl -u tangle --no-pager > /root/tangle.log
+          tail -n 10000 /root/tangle.log
         become: yes
         args:
           executable: /bin/bash
@@ -20,5 +20,5 @@
 
       - name: remove log
         file:
-          path: /root/dkg.log
+          path: /root/tangle.log
           state: absent

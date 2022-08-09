@@ -1,7 +1,7 @@
 
-dkg_user_home: /home/dkg
-chain_data_dir: "{{ dkg_user_home }}/chain-data"
-node_key_dir: "{{ dkg_user_home }}/.keys"
+tangle_user_home: /home/tangle
+chain_data_dir: "{{ tangle_user_home }}/chain-data"
+node_key_dir: "{{ tangle_user_home }}/.keys"
 node_key_priv_file: "{{ node_key_dir }}/node_key"
 node_key_pub_file: "{{ node_key_dir }}/node_key.pub"
 fact_dir: "/etc/ansible/facts.d"

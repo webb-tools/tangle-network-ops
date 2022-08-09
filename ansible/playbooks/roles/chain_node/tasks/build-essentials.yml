@@ -4,7 +4,7 @@
     pkg: "{{ packages }}"
     state: present
     update_cache: true
-  become: 'yes'
+  become: true
 
 - name: check for rustup
   stat:

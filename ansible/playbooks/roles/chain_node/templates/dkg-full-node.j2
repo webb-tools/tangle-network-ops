@@ -1,13 +1,13 @@
 [Unit]
-Description=DKG Full Node
+Description=Tangle collator Node
 
 [Service]
 User=dkg
 Group=dkg
-WorkingDirectory={{ dkg_user_home }}
-ExecStart={{ dkg_bin }} \
+WorkingDirectory={{ tangle_user_home }}
+ExecStart={{ tangle_bin }} \
   --base-path {{ chain_data_dir }} \
-  --chain "{{ ansible_env.HOME }}/dkg/chainspecs/arana_testnet_raw.json" \
+  --chain "{{ ansible_env.HOME }}/tangle/chainspecs/arana_testnet_raw.json" \
   --port 30333 \
   --ws-port 9944 \
   --ws-external \
@@ -16,7 +16,7 @@ ExecStart={{ dkg_bin }} \
   --rpc-external \
   --node-key-file {{ node_key_priv_file }} \
   {% for peer in peers -%}
-  --reserved-nodes /ip4/{{ peer }}/tcp/30333/p2p/{{ hostvars[peer].ansible_local.substrate.dkg.public_key }} \
+  --reserved-nodes /ip4/{{ peer }}/tcp/30333/p2p/{{ hostvars[peer].ansible_local.substrate.tangle.public_key }} \
   {% endfor -%}
   --reserved-only \
   --pruning archive \

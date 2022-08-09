@@ -1,3 +1,4 @@
+
 variable "region" {
   type        = string
   description = "AWS region"
@@ -5,7 +6,7 @@ variable "region" {
 }
 
 variable "bucket_name" {
-  description = "Name of S3 bucket that stores config files"
+  description = "Name of S3 bucket that stores state files"
   type        = string
   default     = "aws-tf-bucket-state"
 }
@@ -21,6 +22,7 @@ variable "node_root_disk_size" {
   description = "Disk size to allocate for nodes' root disk in GiB"
   default     = 512 # GB
 }
+
 variable "tenancy" {
   type        = string
   description = "Tenacy: default, dedicated or host"
@@ -39,7 +41,7 @@ variable "base_instance_ami" {
 
 variable "collator_node_instance_type" {
   type        = string
-  description = "Instance type for collator nodes"
+  description = "Instance type for collating nodes"
   default     = "m6g.large"
 }
 
@@ -47,22 +49,4 @@ variable "collator_node_count" {
   type        = number
   description = "Count of collator nodes"
   default     = 1
-}
-
-module "aws-deployment" {
-  source = "./tf-modules/aws"
-
-  region                               = var.region
-  bucket_name                          = var.bucket_name
-  az                                   = var.az
-  node_root_disk_size                  = var.node_root_disk_size
-  tenancy                              = var.tenancy
-  admin_public_key                     = var.admin_public_key
-  base_instance_ami                    = var.base_instance_ami
-  collator_node_instance_type          = var.collator_node_instance_type
-  collator_node_count                  = var.collator_node_count
-}
-
-output "collator_node_ip_address" {
-  value = module.aws-deployment.collator_node_ip_address
 }

@@ -1,10 +1,10 @@
 
 - hosts:
-    - full_node
+    - collator_node
     - authority_node
   tasks:
-    - name: stop dkg service
+    - name: stop tangle collator service
       become: true
       systemd:
-        name: dkg.service
+        name: tangle-collator.service
         state: stopped
