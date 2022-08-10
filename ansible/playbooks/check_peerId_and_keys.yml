@@ -1,7 +1,7 @@
 ---
  - name: Show Facts
    hosts: 
-      - authority_node
+      - collator_node
    tasks:
     - name: Show substrate facts
       debug:
@@ -47,14 +47,14 @@
                   "wdkg"
               ]
             }
-      register: dkg_gran_key
-      until: dkg_gran_key.status == 200
+      register: has_key
+      until: has_key.status == 200
       retries: 10
       delay: 5
 
-    - name: Verdict gran is
+    - name: Verdict dkg is
       debug:
-        var: has_gran_key
+        var: has_key
 
     - name: check acco key
       uri:

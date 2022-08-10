@@ -1,7 +1,7 @@
-- name: checkout dkg
+- name: Checkout Tangle Network repo
   git:
     repo: '{{ git_repo }}'
-    dest: '{{ dkg_home }}'
+    dest: '{{ tangle_home }}'
     version: '{{ git_branch }}'
     force: true
     accept_hostkey: yes
@@ -9,9 +9,9 @@
     - build-chain
     - rebuild-chain
 
-- name: compile tangle-collator node
+- name: Compile tangle-collator node
   command:
-    cmd: '{{ cargo_bin }} +nightly build --release -p tangle-collator'
+    cmd: '{{ cargo_bin }} +nightly build --release --locked -p tangle-collator'
     chdir: '{{ tangle_home }}'
   async: 3600
   poll: 0
@@ -20,7 +20,7 @@
     - build-chain
     - rebuild-chain
 
-- name: compile tangle-node - check async status
+- name: Compile tangle-node - check async status
   async_status: jid={{ tangle.ansible_job_id }}
   register: job_result
   until: job_result.finished
@@ -30,7 +30,7 @@
     - build-chain
     - rebuild-chain
 
-- name: change tangle-node bin owner to tangle-node
+- name: Change tangle-node bin owner to tangle
   file:
     path: '{{ tangle_bin }}'
     owner: tangle

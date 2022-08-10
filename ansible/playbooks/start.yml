@@ -1,7 +1,6 @@
 
 - hosts:
     - collator_node
-    - authority_node
   tasks:
     - name: start tangle collator service
       become: true

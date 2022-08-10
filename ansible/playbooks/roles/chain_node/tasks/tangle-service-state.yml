@@ -1,4 +1,4 @@
 
-- name: restart tangle-node
+- name: Restart tangle-collator-node
   systemd: 'state={{ tangle_service_state }} name=tangle daemon_reload=yes'
   become: true

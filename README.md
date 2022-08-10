@@ -135,7 +135,7 @@ ansible-playbook -i hosts --ssh-extra-args "-F ./ssh_config" ansible/playbooks/c
 
 To view collator node logs:
 ```
-ansible-playbook -i hosts --ssh-extra-args "-F ./ssh_config" ansible/playbooks/peek_logs.yml
+ansible-playbook -i hosts --ssh-extra-args "-F ./ssh_config" ansible/playbooks/peek_collator_logs.yml
 ```
 
 To view authority node logs:

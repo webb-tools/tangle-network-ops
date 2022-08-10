@@ -1,5 +1,5 @@
 
-- name: stop Tangle service
+- name: Stop Tangle service
   become: true
   systemd:
     name: tangle-collator.service
@@ -9,23 +9,13 @@
   become: true
   ansible.builtin.copy:
     remote_src: true
-    src: "{{ dkg_user_home }}/chainspecs/arana_testnet_raw.json"
-    dest: "{{ dkg_user_home }}/arana_testnet_raw.json"
+    src: "{{ dkg_user_home }}/resources/testnet/template-local-raw.json"
+    dest: "{{ dkg_user_home }}/resources/testnet/template-local-raw.json"
     owner: dkg
     mode: '0644'
 
-- name: reinstall DKG systemd unit file (authority node)
-  template: src=dkg-authority-node.j2 dest=/etc/systemd/system/tangle-collator.service
-  become: true
-  when: "'authority_node' in group_names"
-  vars:
-    peers: "{{ bootnodes }}"
-    authority: "{{ authority }}"
-  tags:
-    tangle-node-service
-
-- name: reinstall Tangle systemd unit file (collator node)
-  template: src=dkg-collator-node.j2 dest=/etc/systemd/system/tangle-collator.service
+- name: Reinstall Tangle systemd unit file (collator node)
+  template: src=tangle-collator-node.j2 dest=/etc/systemd/system/tangle-collator.service
   become: true
   when: "'collator_node' in group_names"
   vars:
