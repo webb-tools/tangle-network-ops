@@ -1,10 +1,10 @@
-# Secure DKG node setup - *not collatory secured yet*🙃
+# Tangle Collator Node 
 
 ❗ **Current development should be considered a work in progress.**
 
-## Setting up a DKG Node
+## Setting up a Tangle Node
 
-This repo includes code to run a DKG Node on AWS using [Terraform](https://www.terraform.io/) and [Ansible](https://www.ansible.com/). To get started, ensure you have both Terraform and Ansible installed locally.
+This repo includes code to run a Tangle Collator Node on AWS using [Terraform](https://www.terraform.io/) and [Ansible](https://www.ansible.com/). To get started, ensure you have both Terraform and Ansible installed locally.
 
 In addition, [create an AWS account](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/) and an [IAM role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html) that has the appropriate permissions for the contained infrastructure setup. Ensure the AWS credentials are exported to the appropriate computer running the setup. When setup, you should have the following files in `~/.aws` :
 - `config`
@@ -42,7 +42,7 @@ Note: if you have an error, you may need to [review your AWS credentials](https:
 
 
 Also, you will need to create a public & private key pair to access your instance.
-We assume that's defined in `~/.ssh/dkg-node.pub`. It can be created with:
+We assume that's defined in `~/.ssh/tangle-node.pub`. It can be created with:
 
 ```
 ssh-keygen -P "" -m PEM -f SSH-KEY-PAIR-NAME
@@ -54,21 +54,20 @@ Then add this key to your ssh agent:
 ssh-add ~/.ssh/<SSH_PRIV_KEY>
 ```
 
-You will also have to add this ssh key to your approved github ssh keys, since ansible tries to pull
-the dkg repository through ssh. 
+You will also have to add this ssh key to your approved github ssh keys, since ansible tries to pull the tangle repository through ssh. 
 
 Next, plan the terraform changes:
 
 ```sh
 terraform plan \
-  -var admin_public_key="$(cat ~/.ssh/dkg-node.pub)"
+  -var admin_public_key="$(cat ~/.ssh/tangle-node.pub)"
 ```
 
 Then, if that looks good, apply the terraform changes:
 
 ```sh
 terraform apply \
-  -var admin_public_key="$(cat ~/.ssh/dkg-node.pub)"
+  -var admin_public_key="$(cat ~/.ssh/tangle-node.pub)"
 ```
 
 The resulting **outputs** should read out the following:
@@ -102,7 +101,7 @@ cat output.json | python3 ./ansible/generate_inv.py
 
 **Note:** after you change any nodes created by terraform, you will need to re-run this command.
 
-To make sure the command was successcollatory executed please `ls` the current directory. You should see a `host` and `ssh_config` file present.
+To make sure the command was successfully executed please `ls` the current directory. You should see a `host` and `ssh_config` file present.
 
 You will then have to update your hosts file manually so it has the `ansible_ssh_private_key_file` variable added in, like so:
 
@@ -120,7 +119,7 @@ You will then have to update your hosts file manually so it has the `ansible_ssh
 
 > TODO - make this automatic, so we don't have to worry about the above variables added to be overwriten when running the generate_inv.py script
 
-#### Setting up DKG application
+#### Setting up Tangle application
 
 Setting up each node is a matter of simply running the Ansible playbooks. Make sure your inventory is up-to-date by running the generate_inv.py command above!
 
@@ -128,8 +127,8 @@ To run the playbook and configure the servers, run:
 ```
 ansible-playbook -i hosts --ssh-extra-args "-F ./ssh_config" ansible/playbooks/chain.yml
 ```
-> Note - this will take about 30 or more minutes to compile, specifically the compiling of the dkg-node is what takes super long.
-> You can expect around 200 retries. 
+> Note - this will take about 30 or more minutes to compile, specifically the compiling of the tangle-collator-node is what takes super long.
+> You can expect around 300 retries. 
 
 #### See node logs
 
