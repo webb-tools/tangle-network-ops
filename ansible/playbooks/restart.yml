@@ -1,17 +1,16 @@
 
 - hosts:
-    - full_node
-    - authority_node
+    - collator_node
   tasks:
-    - name: stop DKG service
+    - name: stop tangle collator service
       become: true
       systemd:
-        name: dkg.service
+        name: tangle-collator.service
         state: stopped
 
-    - name: start DKG service
+    - name: start tangle collator service
       become: true
       systemd:
-        name: dkg.service
+        name: tangle-collator.service
         state: started
         daemon_reload: yes

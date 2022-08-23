@@ -1,0 +1,35 @@
+[Unit]
+Description=Tangle collator Node
+
+[Service]
+User=tangle
+Group=tangle
+WorkingDirectory={{ tangle_user_home }}
+ExecStart={{ tangle_bin }} \
+  --base-path {{ chain_data_dir }} \
+  --chain "{{ ansible_env.HOME }}/tangle/resources/testnet/template-local-raw.json" \
+  --collator \
+  --force-authoring \
+  --port 30334 \
+  --ws-port 9944 \
+  --ws-external \
+  --no-mdns  \
+  --rpc-port 9933 \
+  --rpc-external \
+  --node-key-file {{ node_key_priv_file }} \
+  {% for peer in peers -%}
+  --reserved-nodes /ip4/{{ peer }}/tcp/30333/p2p/{{ hostvars[peer].ansible_local.substrate.tangle.public_key }} \
+  {% endfor -%}
+  --bootnodes /ip4/45.32.85.173/tcp/30334/p2p/12D3KooWFoZRHGV27rPtP1WusDKMtiwcSt7uPzLcYnDVn3DhcDrC \
+  --reserved-only \
+  --pruning archive \
+  --ws-max-connections 1000 \
+  --rpc-cors=all \
+  -ldkg=debug \
+  -ldkg_metadata=debug \
+  -lruntime::offchain=debug \
+  -ldkg_proposal_handler=debug \
+  -ldkg_proposals=debug \
+  --log info \
+  --rpc-methods=unsafe -- --execution wasm --chain {{ ansible_env.HOME }}/tangle/resources/testnet/rococo-local-cfde.json --port 30333 \
+  --bootnodes /ip4/45.32.66.129/tcp/30333/p2p/12D3KooWHXXsXxa45fSX39TbKv2NwT8rEBzz5q2MJQ2w2fF5VyTn

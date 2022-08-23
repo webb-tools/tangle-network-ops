@@ -1,9 +1,8 @@
 
 - hosts:
-    - full_node
-    - authority_node
+    - collator_node
   tasks:
     - include_role:
         name: chain_node
-        tasks_from: resync_fulls
+        tasks_from: resync_collators
       

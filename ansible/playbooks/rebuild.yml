@@ -1,7 +1,6 @@
 
 - hosts:
-    - full_node
-    - authority_node
+    - collator_node
   tasks:
     - include_role:
         name: chain_node

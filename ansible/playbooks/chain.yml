@@ -1,6 +1,5 @@
 
 - hosts:
-    - full_node
-    - authority_node
+    - collator_node
   roles:
     - chain_node

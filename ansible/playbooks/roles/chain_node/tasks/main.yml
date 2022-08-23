@@ -11,5 +11,5 @@
 - name: Generate keys
   import_tasks: generate-keys.yml
 
-- name: Install DKG Service
-  import_tasks: dkg-service.yml
+- name: Install Tangle Collator Service
+  import_tasks: tangle-service.yml

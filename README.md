@@ -1,4 +1,4 @@
-# Secure DKG node setup - *not fully secured yet*🙃
+# Secure DKG node setup - *not collatory secured yet*🙃
 
 ❗ **Current development should be considered a work in progress.**
 
@@ -76,10 +76,10 @@ The resulting **outputs** should read out the following:
 ```
 authority_node_ip_address = "<PRIVATE_IP_ADDR>"
 bastion_ip_address = "<PUBLIC_IP_ADDR>"
-full_node_ip_address = [
+collator_node_ip_address = [
   "<PRIVATE_IP_ADDR>",
 ]
-full_node_secondary_ip_address = [
+collator_node_secondary_ip_address = [
   "<PRIVATE_IP_ADDR>",
 ]
 ```
@@ -102,7 +102,7 @@ cat output.json | python3 ./ansible/generate_inv.py
 
 **Note:** after you change any nodes created by terraform, you will need to re-run this command.
 
-To make sure the command was successfully executed please `ls` the current directory. You should see a `host` and `ssh_config` file present.
+To make sure the command was successcollatory executed please `ls` the current directory. You should see a `host` and `ssh_config` file present.
 
 You will then have to update your hosts file manually so it has the `ansible_ssh_private_key_file` variable added in, like so:
 
@@ -113,7 +113,7 @@ You will then have to update your hosts file manually so it has the `ansible_ssh
 [bastion]
 <PUB_IP_ADDR> ansible_ssh_private_key_file=~/.ssh/<SSH_PRIV_KEY>
 
-[full_node]
+[collator_node]
 <PRIV_IP_ADDR> ansible_ssh_private_key_file=~/.ssh/<SSH_PRIV_KEY>
 <PRIV_IP_ADDR> ansible_ssh_private_key_file=~/.ssh/<SSH_PRIV_KEY>
 ```
@@ -133,14 +133,14 @@ ansible-playbook -i hosts --ssh-extra-args "-F ./ssh_config" ansible/playbooks/c
 
 #### See node logs
 
-To view full node logs:
+To view collator node logs:
 ```
-ansible-playbook -i hosts --ssh-extra-args "-F ./ssh_config" ansible/playbooks/peek_logs.yml
+ansible-playbook -i hosts --ssh-extra-args "-F ./ssh_config" ansible/playbooks/peek_collator_logs.yml
 ```
 
 To view authority node logs:
 ```
-ansible-playbook -i hosts --ssh-extra-args "-F ./ssh_config" ansible/playbooks/peek_logs_full.yml
+ansible-playbook -i hosts --ssh-extra-args "-F ./ssh_config" ansible/playbooks/peek_logs_collator.yml
 ```
 
 # Restarting the whole infrastructure

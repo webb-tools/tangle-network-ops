@@ -1,16 +1,16 @@
 
-- name: add DKG group
+- name: add Tangle group
   group:
-    name: dkg
+    name: tangle
   become: true
   tags:
     system-accounts
 
-- name: add DKG user
+- name: add Tangle user
   user:
-    name: dkg
-    comment: dkg User
-    group: dkg
+    name: tangle
+    comment: Tangle User
+    group: tangle
   become: true
   tags:
     system-accounts

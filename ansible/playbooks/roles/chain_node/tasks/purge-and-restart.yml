@@ -1,50 +1,40 @@
 
-- name: stop DKG service
+- name: Stop tangle collator service
   become: true
   systemd:
-    name: dkg.service
+    name: tangle-collator.service
     state: stopped
 
-- name: bring chain spec
+- name: Bring chain spec
   become: true
   ansible.builtin.copy:
     remote_src: true
-    src: "{{ dkg_user_home }}/chainspecs/arana_testnet_raw.json"
-    dest: "{{ dkg_user_home }}/arana_testnet_raw.json"
-    owner: dkg
+    src: "{{ tangle_user_home }}/resources/testnet/template-local-raw.json"
+    dest: "{{ tangle_user_home }}/resources/testnet/template-local-raw.json"
+    owner: tangle
     mode: '0644'
 
-- name: purge chain
+- name: Purge chain
   become: true
   shell: |
     set -o pipefail
-    {{ dkg_bin }} purge-chain -y --chain "{{ dkg_user_home }}/arana_testnet_raw.json" --base-path {{ chain_data_dir }}  --database paritydb
+    {{ tangle_bin }} purge-chain -y --chain "{{ tangle_user_home }}/resources/testnet/template-local-raw.json" --base-path {{ chain_data_dir }}  --database paritydb
   args:
     executable: /bin/bash
   changed_when: False
 
-- name: reinstall DKG systemd unit file (authority node)
-  template: src=dkg-authority-node.j2 dest=/etc/systemd/system/dkg.service
+- name: Reinstall Tangle collator systemd unit file (collator node)
+  template: src=tangle-collator-node.j2 dest=/etc/systemd/system/tangle-collator.service
   become: true
-  when: "'authority_node' in group_names"
+  when: "'collator_node' in group_names"
   vars:
-    peers: "{{ bootnodes }}"
-    authority: "{{ authority }}"
+    peers: "{{ groups['collator_node'] }}"
   tags:
-    dkg-service
+    collator-node-service
 
-- name: reinstall DKG systemd unit file (full node)
-  template: src=dkg-full-node.j2 dest=/etc/systemd/system/dkg.service
-  become: true
-  when: "'full_node' in group_names"
-  vars:
-    peers: "{{ groups['authority_node'] }}"
-  tags:
-    dkg-service
-
-- name: start dkg service
+- name: Start collator service
   become: true
   systemd:
-    name: dkg.service
+    name: tangle-collator.service
     state: started
     daemon_reload: yes

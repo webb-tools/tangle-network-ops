@@ -1,6 +1,11 @@
 # Backend
 terraform {
-  backend "s3" {}
+  backend "s3" {
+    bucket         = "aws-tf-bucket-state"
+    key            = "terraform"
+    region         = "us-east-1"
+    dynamodb_table = "aws-tf-lock"
+  }
 }
 #TODO: add additional cloud providers
 # Configuration for AWS

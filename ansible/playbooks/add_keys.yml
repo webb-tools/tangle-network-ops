@@ -1,6 +1,6 @@
 
 - hosts:
-    - authority_node
+    - collator_node
 
   tasks:
     - name: add aura author key to keystore
@@ -28,7 +28,7 @@
       debug:
         var: aura_insertion
 
-    - name: add grandpa author key to keystore
+    - name: add dkg key to keystore
       uri:
         url: http://localhost:9933
         method: "POST"
@@ -41,7 +41,7 @@
                 "params": [
                     "gran",
                     "{{ mnemonic }}",
-                    "{{ grandpa_public_key }}"
+                    "{{ dkg_public_key }}"
                 ]
             }
       register: insertion
@@ -54,21 +54,21 @@
         var: insertion
         
     - name: add acco author key to keystore
-        uri:
-          url: http://localhost:9933
-          method: "POST"
-          body_format: json
-          body: |
-              {
-                  "jsonrpc":"2.0",
-                  "id":1,
-                  "method":"author_insertKey",
-                  "params": [
-                      "acco",
-                      "{{ mnemonic }}",
-                      "{{ acco_public_key }}"
-                  ]
-              }
+      uri:
+        url: http://localhost:9933
+        method: "POST"
+        body_format: json
+        body: |
+            {
+                "jsonrpc":"2.0",
+                "id":1,
+                "method":"author_insertKey",
+                "params": [
+                    "acco",
+                    "{{ mnemonic }}",
+                    "{{ acco_public_key }}"
+                ]
+            }
       register: insertion
       until: insertion.status == 200
       retries: 10

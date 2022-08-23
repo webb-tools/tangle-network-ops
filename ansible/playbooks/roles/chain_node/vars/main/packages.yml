@@ -12,4 +12,6 @@ packages:
   - build-essential
   - git
   - clang
+  - llvm
   - libclang-dev
+  - protobuf-compiler
