@@ -8,7 +8,7 @@ variable "region" {
 variable "bucket_name" {
   description = "Name of S3 bucket that stores state files"
   type        = string
-  default     = "aws-tf-bucket-state"
+  default     = "tf-bucket-state"
 }
 
 variable "az" {
@@ -32,7 +32,7 @@ variable "tenancy" {
 variable "admin_public_key" {
   type = string
 }
-
+# TODO: update default ami instance
 variable "base_instance_ami" {
   type        = string
   description = "AWS ami image to use for core instances"

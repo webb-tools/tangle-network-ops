@@ -20,6 +20,6 @@
   retries: 10
   delay: 5
 
-- name: show repsonse
+- name: show response
   debug:
     var: insertion

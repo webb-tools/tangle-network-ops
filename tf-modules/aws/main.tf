@@ -41,6 +41,7 @@ resource "aws_security_group" "collator_node_sg" {
   }
 }
 
+# TODO: review key storage options
 # module "keystore" {
 #   source = "./keystore"
 
