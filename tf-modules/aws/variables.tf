@@ -39,14 +39,14 @@ variable "base_instance_ami" {
   default     = "ami-02207126df36eb80c" # From https://cloud-images.ubuntu.com/locator/ec2/
 }
 
-variable "collator_node_instance_type" {
+variable "validator_node_instance_type" {
   type        = string
-  description = "Instance type for collating nodes"
+  description = "Instance type for validator nodes"
   default     = "m6g.large"
 }
 
-variable "collator_node_count" {
+variable "validator_node_count" {
   type        = number
-  description = "Count of collator nodes"
+  description = "Count of validator nodes"
   default     = 1
 }

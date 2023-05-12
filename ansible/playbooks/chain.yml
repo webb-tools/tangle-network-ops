@@ -1,5 +1,5 @@
 
 - hosts:
-    - collator_node
+    - validator_node
   roles:
     - chain_node

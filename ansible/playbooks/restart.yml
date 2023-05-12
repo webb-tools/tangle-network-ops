@@ -1,16 +1,16 @@
 
 - hosts:
-    - collator_node
+    - validator_node
   tasks:
-    - name: stop tangle collator service
+    - name: stop tangle validator service
       become: true
       systemd:
-        name: tangle-collator.service
+        name: tangle-standalone.service
         state: stopped
 
-    - name: start tangle collator service
+    - name: start tangle validator service
       become: true
       systemd:
-        name: tangle-collator.service
+        name: tangle-standalone.service
         state: started
         daemon_reload: yes

@@ -11,5 +11,5 @@
 - name: Generate keys
   import_tasks: generate-keys.yml
 
-- name: Install Tangle Collator Service
+- name: Install Tangle validator Service
   import_tasks: tangle-service.yml

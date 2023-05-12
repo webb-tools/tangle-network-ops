@@ -9,9 +9,9 @@
     - build-chain
     - rebuild-chain
 
-- name: Compile tangle-collator node
+- name: Compile tangle-standalone node
   command:
-    cmd: '{{ cargo_bin }} +nightly build --release --locked -p tangle-collator'
+    cmd: '{{ cargo_bin }} +nightly build --release --locked -p tangle-standalone'
     chdir: '{{ tangle_home }}'
   async: 3600
   poll: 0

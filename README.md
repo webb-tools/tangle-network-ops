@@ -1,10 +1,10 @@
-# Tangle Collator Node 
+# Tangle Validator Node 
 
 ❗ **Current development should be considered a work in progress.**
 
 ## Setting up a Tangle Node
 
-This repo includes code to run a Tangle Collator Node on AWS using [Terraform](https://www.terraform.io/) and [Ansible](https://www.ansible.com/). To get started, ensure you have both Terraform and Ansible installed locally.
+This repo includes code to run a Tangle Validator Node on AWS using [Terraform](https://www.terraform.io/) and [Ansible](https://www.ansible.com/). To get started, ensure you have both Terraform and Ansible installed locally.
 
 In addition, [create an AWS account](https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/) and an [IAM role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html) that has the appropriate permissions for the contained infrastructure setup. Ensure the AWS credentials are exported to the appropriate computer running the setup. When setup, you should have the following files in `~/.aws` :
 - `config`
@@ -75,10 +75,10 @@ The resulting **outputs** should read out the following:
 ```
 authority_node_ip_address = "<PRIVATE_IP_ADDR>"
 bastion_ip_address = "<PUBLIC_IP_ADDR>"
-collator_node_ip_address = [
+validator_node_ip_address = [
   "<PRIVATE_IP_ADDR>",
 ]
-collator_node_secondary_ip_address = [
+validator_node_secondary_ip_address = [
   "<PRIVATE_IP_ADDR>",
 ]
 ```
@@ -112,7 +112,7 @@ You will then have to update your hosts file manually so it has the `ansible_ssh
 [bastion]
 <PUB_IP_ADDR> ansible_ssh_private_key_file=~/.ssh/<SSH_PRIV_KEY>
 
-[collator_node]
+[validator_node]
 <PRIV_IP_ADDR> ansible_ssh_private_key_file=~/.ssh/<SSH_PRIV_KEY>
 <PRIV_IP_ADDR> ansible_ssh_private_key_file=~/.ssh/<SSH_PRIV_KEY>
 ```
@@ -127,19 +127,19 @@ To run the playbook and configure the servers, run:
 ```
 ansible-playbook -i hosts --ssh-extra-args "-F ./ssh_config" ansible/playbooks/chain.yml
 ```
-> Note - this will take about 30 or more minutes to compile, specifically the compiling of the tangle-collator-node is what takes super long.
+> Note - this will take about 30 or more minutes to compile, specifically the compiling of the tangle-validator-node is what takes super long.
 > You can expect around 300 retries. 
 
 #### See node logs
 
-To view collator node logs:
+To view validator node logs:
 ```
-ansible-playbook -i hosts --ssh-extra-args "-F ./ssh_config" ansible/playbooks/peek_collator_logs.yml
+ansible-playbook -i hosts --ssh-extra-args "-F ./ssh_config" ansible/playbooks/peek_validator_logs.yml
 ```
 
 To view authority node logs:
 ```
-ansible-playbook -i hosts --ssh-extra-args "-F ./ssh_config" ansible/playbooks/peek_logs_collator.yml
+ansible-playbook -i hosts --ssh-extra-args "-F ./ssh_config" ansible/playbooks/peek_logs_validator.yml
 ```
 
 # Restarting the whole infrastructure

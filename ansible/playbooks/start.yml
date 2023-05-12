@@ -1,9 +1,9 @@
 
 - hosts:
-    - collator_node
+    - validator_node
   tasks:
-    - name: start tangle collator service
+    - name: start tangle validator service
       become: true
       systemd:
-        name: tangle-collator.service
+        name: tangle-standalone.service
         state: started

@@ -1,12 +1,12 @@
 ---
- - name: peek collator logs
+ - name: peek validator logs
    hosts: 
-      - collator_node
+      - validator_node
    tasks:
-      - name: peep collator logs
+      - name: peep validator logs
         shell: |
           set -o pipefail
-          journalctl -u tangle-collator --no-pager > /root/tangle.log
+          journalctl -u tangle-standalone --no-pager > /root/tangle.log
           tail -n 100 /root/tangle.log
         become: true
         args:

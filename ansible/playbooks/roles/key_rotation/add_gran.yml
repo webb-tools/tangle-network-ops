@@ -1,5 +1,5 @@
 
-- name: add dkg key to keystore
+- name: add gran key to keystore
   uri:
     url: http://localhost:9933
     method: "POST"
@@ -10,9 +10,9 @@
             "id":1,
             "method":"author_insertKey",
             "params": [
-                "wdkg",
+                "gran",
                 "{{ mnemonic }}",
-                "{{ wdkg_public_key }}"
+                "{{ gran_public_key }}"
             ]
         }
   register: insertion

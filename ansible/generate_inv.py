@@ -4,14 +4,14 @@ import sys
 import pathlib
 
 
-def build_hosts_tmpl(collator_node_ip_address):
-    ip = "".join(collator_node_ip_address)
-    return (f'[collator_node]\n{ip}\n')
+def build_hosts_tmpl(validator_node_ip_address):
+    ip = "".join(validator_node_ip_address)
+    return (f'[validator_node]\n{ip}\n')
 
 def build_inventory_file(inv):
-    collator_node_ip_address = inv['collator_node_ip_address']['value']
+    validator_node_ip_address = inv['validator_node_ip_address']['value']
 
-    hosts_file = build_hosts_tmpl(collator_node_ip_address)
+    hosts_file = build_hosts_tmpl(validator_node_ip_address)
 
     with open('hosts', 'w') as f:
         f.write(hosts_file)
@@ -20,10 +20,10 @@ def build_inventory_file(inv):
 def build_ssh_config(inv):
     with open('{}/ssh_config.template'.format(pathlib.Path(__file__).parent.absolute()), 'r') as f:
         tmpl = f.read()
-    collator_node_ip_address = inv['collator_node_ip_address']['value']
-    ip = "".join(collator_node_ip_address)
+    validator_node_ip_address = inv['validator_node_ip_address']['value']
+    ip = "".join(validator_node_ip_address)
     print(ip);
-    res = tmpl.replace('{collator}',ip)
+    res = tmpl.replace('{validator}',ip)
     with open('ssh_config', 'w') as f:
         f.write(res)
 

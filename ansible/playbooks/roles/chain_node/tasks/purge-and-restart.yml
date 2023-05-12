@@ -1,16 +1,16 @@
 
-- name: Stop tangle collator service
+- name: Stop tangle standalone service
   become: true
   systemd:
-    name: tangle-collator.service
+    name: tangle-standalone.service
     state: stopped
 
 - name: Bring chain spec
   become: true
   ansible.builtin.copy:
     remote_src: true
-    src: "{{ tangle_user_home }}/resources/testnet/template-local-raw.json"
-    dest: "{{ tangle_user_home }}/resources/testnet/template-local-raw.json"
+    src: "{{ tangle_user_home }}/chainspecs/arana-local.json"
+    dest: "{{ tangle_user_home }}/chainspecs/arana-local.json"
     owner: tangle
     mode: '0644'
 
@@ -18,23 +18,23 @@
   become: true
   shell: |
     set -o pipefail
-    {{ tangle_bin }} purge-chain -y --chain "{{ tangle_user_home }}/resources/testnet/template-local-raw.json" --base-path {{ chain_data_dir }}  --database paritydb
+    {{ tangle_bin }} purge-chain -y --chain "{{ tangle_user_home }}/chainspecs/arana-local.json" --base-path {{ chain_data_dir }}  --database paritydb
   args:
     executable: /bin/bash
   changed_when: False
 
-- name: Reinstall Tangle collator systemd unit file (collator node)
-  template: src=tangle-collator-node.j2 dest=/etc/systemd/system/tangle-collator.service
+- name: Reinstall Tangle validator systemd unit file (validator node)
+  template: src=tangle-validator-node.j2 dest=/etc/systemd/system/tangle-standalone.service
   become: true
-  when: "'collator_node' in group_names"
+  when: "'validator_node' in group_names"
   vars:
-    peers: "{{ groups['collator_node'] }}"
+    peers: "{{ groups['validator_node'] }}"
   tags:
-    collator-node-service
+    validator-node-service
 
-- name: Start collator service
+- name: Start validator service
   become: true
   systemd:
-    name: tangle-collator.service
+    name: tangle-standalone.service
     state: started
     daemon_reload: yes

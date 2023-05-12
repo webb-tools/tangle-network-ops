@@ -2,7 +2,7 @@
 Host *
   ForwardAgent yes
 
-Host {collator}
+Host {validator}
   User ubuntu
   ForwardAgent yes
   StrictHostKeyChecking no
@@ -13,6 +13,6 @@ Host {collator}
 
 Host 10.0.*
   User ubuntu
-  ProxyJump {collator}
+  ProxyJump {validator}
   StrictHostKeyChecking no
   UserKnownHostsFile /dev/null

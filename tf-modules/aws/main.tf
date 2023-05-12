@@ -17,8 +17,8 @@ resource "aws_key_pair" "admin_key_pair" {
 
 # Security group restrictions
 # TODO: restrict traffic for more secure setup
-resource "aws_security_group" "collator_node_sg" {
-  name        = "collator_node_sg"
+resource "aws_security_group" "validator_node_sg" {
+  name        = "validator_node_sg"
   description = "Allow traffic ... for now."
   
   # Currently, we'll allow all communication
@@ -37,7 +37,7 @@ resource "aws_security_group" "collator_node_sg" {
   }
 
   tags = {
-    Name = "collator_node_sg"
+    Name = "validator_node_sg"
   }
 }
 
@@ -49,14 +49,14 @@ resource "aws_security_group" "collator_node_sg" {
 #   alias    = "alias/eth_notice_signer-2"
 # }
 
-resource "aws_instance" "collator_node_public" {
+resource "aws_instance" "validator_node_public" {
   ami                         = var.base_instance_ami
   availability_zone           = var.az
   ebs_optimized               = true
-  instance_type               = var.collator_node_instance_type
+  instance_type               = var.validator_node_instance_type
   key_name                    = aws_key_pair.admin_key_pair.key_name
   tenancy                     = var.tenancy
-  vpc_security_group_ids      = [aws_security_group.collator_node_sg.id]
+  vpc_security_group_ids      = [aws_security_group.validator_node_sg.id]
   associate_public_ip_address = true
 
   root_block_device {
@@ -64,9 +64,9 @@ resource "aws_instance" "collator_node_public" {
     delete_on_termination = false
   }
 
-  count = var.collator_node_count
+  count = var.validator_node_count
 
   tags = {
-    Name = "tangle_collator_node"
+    Name = "tangle_validator_node"
   }
 }

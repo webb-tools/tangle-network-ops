@@ -1,8 +1,8 @@
 
 - hosts:
-    - collator_node
+    - validator_node
   tasks:
     - include_role:
         name: chain_node
-        tasks_from: resync_collators
+        tasks_from: resync_validator
       

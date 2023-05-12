@@ -37,15 +37,15 @@ variable "base_instance_ami" {
   default     = "ami-02207126df36eb80c" # From https://cloud-images.ubuntu.com/locator/ec2/
 }
 
-variable "collator_node_instance_type" {
+variable "validator_node_instance_type" {
   type        = string
-  description = "Instance type for collator nodes"
+  description = "Instance type for validator nodes"
   default     = "m6g.large"
 }
 
-variable "collator_node_count" {
+variable "validator_node_count" {
   type        = number
-  description = "Count of collator nodes"
+  description = "Count of validator nodes"
   default     = 1
 }
 
@@ -59,10 +59,10 @@ module "aws-deployment" {
   tenancy                              = var.tenancy
   admin_public_key                     = var.admin_public_key
   base_instance_ami                    = var.base_instance_ami
-  collator_node_instance_type          = var.collator_node_instance_type
-  collator_node_count                  = var.collator_node_count
+  validator_node_instance_type          = var.validator_node_instance_type
+  validator_node_count                  = var.validator_node_count
 }
 
-output "collator_node_ip_address" {
-  value = module.aws-deployment.collator_node_ip_address
+output "validator_node_ip_address" {
+  value = module.aws-deployment.validator_node_ip_address
 }

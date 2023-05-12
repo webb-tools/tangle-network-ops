@@ -1,19 +1,19 @@
 - hosts:
-    - collator_node
+    - validator_node
   tasks:
-    - name: stop tangle-collator service
+    - name: stop tangle-standalone service
       become: true
       systemd:
-        name: tangle-collator.service
+        name: tangle-standalone.service
         state: stopped
 
     - include_role:
         name: chain_node
         tasks_from: build-chain.yml
 
-    - name: start tangle collator service
+    - name: start tangle validator service
       become: true
       systemd:
-        name: tangle-collator.service
+        name: tangle-standalone.service
         state: started
       

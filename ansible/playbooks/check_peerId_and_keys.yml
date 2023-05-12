@@ -1,7 +1,7 @@
 ---
  - name: Show Facts
    hosts: 
-      - collator_node
+      - validator_node
    tasks:
     - name: Show substrate facts
       debug:
@@ -31,7 +31,6 @@
       debug:
         var: has_key
 
-    
     - name: check wdkg key
       uri:
         url: http://localhost:9933
@@ -79,3 +78,99 @@
     - name: Verdict acco is
       debug:
         var: has_key
+
+    - name: check rand key
+      uri:
+        url: http://localhost:9933
+        method: "POST"
+        body_format: json
+        body: |
+            {
+              "jsonrpc":"2.0",
+              "id":1,
+              "method":"author_hasKey",
+              "params": [
+                  "{{ rand_public_key }}",
+                  "rand"
+              ]
+            }
+      register: has_key
+      until: has_key.status == 200
+      retries: 10
+      delay: 5
+
+    - name: Verdict rand is
+      debug:
+        var: has_key
+
+    - name: check nmbs key
+      uri:
+        url: http://localhost:9933
+        method: "POST"
+        body_format: json
+        body: |
+            {
+              "jsonrpc":"2.0",
+              "id":1,
+              "method":"author_hasKey",
+              "params": [
+                  "{{ nmbs_public_key }}",
+                  "nmbs"
+              ]
+            }
+      register: has_key
+      until: has_key.status == 200
+      retries: 10
+      delay: 5
+
+    - name: Verdict nmbs is
+      debug:
+        var: has_key
+
+    - name: check imon key
+      uri:
+        url: http://localhost:9933
+        method: "POST"
+        body_format: json
+        body: |
+            {
+              "jsonrpc":"2.0",
+              "id":1,
+              "method":"author_hasKey",
+              "params": [
+                  "{{ imon_public_key }}",
+                  "imon"
+              ]
+            }
+      register: has_key
+      until: has_key.status == 200
+      retries: 10
+      delay: 5
+
+  - name: Verdict imon is
+    debug:
+      var: has_key
+
+  - name: check gran key
+    uri:
+      url: http://localhost:9933
+      method: "POST"
+      body_format: json
+      body: |
+          {
+            "jsonrpc":"2.0",
+            "id":1,
+            "method":"author_hasKey",
+            "params": [
+                "{{ gran_public_key }}",
+                "gran"
+            ]
+          }
+    register: has_key
+    until: has_key.status == 200
+    retries: 10
+    delay: 5
+
+  - name: Verdict gran is
+    debug:
+      var: has_key

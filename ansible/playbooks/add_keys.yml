@@ -1,6 +1,6 @@
 
 - hosts:
-    - collator_node
+    - validator_node
 
   tasks:
     - name: add aura author key to keystore
@@ -39,9 +39,9 @@
                 "id":1,
                 "method":"author_insertKey",
                 "params": [
-                    "gran",
+                    "wdkg",
                     "{{ mnemonic }}",
-                    "{{ dkg_public_key }}"
+                    "{{ wdkg_public_key }}"
                 ]
             }
       register: insertion
@@ -67,6 +67,106 @@
                     "acco",
                     "{{ mnemonic }}",
                     "{{ acco_public_key }}"
+                ]
+            }
+      register: insertion
+      until: insertion.status == 200
+      retries: 10
+      delay: 5
+
+    - name: show response
+      debug:
+        var: insertion
+  
+    - name: add gran key to keystore
+      uri:
+        url: http://localhost:9933
+        method: "POST"
+        body_format: json
+        body: |
+            {
+                "jsonrpc":"2.0",
+                "id":1,
+                "method":"author_insertKey",
+                "params": [
+                    "gran",
+                    "{{ mnemonic }}",
+                    "{{ gran_public_key }}"
+                ]
+            }
+      register: insertion
+      until: insertion.status == 200
+      retries: 10
+      delay: 5
+
+    - name: show response
+      debug:
+        var: insertion
+
+    - name: add Rand key to keystore
+      uri:
+        url: http://localhost:9933
+        method: "POST"
+        body_format: json
+        body: |
+            {
+                "jsonrpc":"2.0",
+                "id":1,
+                "method":"author_insertKey",
+                "params": [
+                    "rand",
+                    "{{ mnemonic }}",
+                    "{{ rand_public_key }}"
+                ]
+            }
+      register: insertion
+      until: insertion.status == 200
+      retries: 10
+      delay: 5
+
+    - name: show response
+      debug:
+        var: insertion
+
+    - name: add Nimbus key to keystore
+      uri:
+        url: http://localhost:9933
+        method: "POST"
+        body_format: json
+        body: |
+            {
+                "jsonrpc":"2.0",
+                "id":1,
+                "method":"author_insertKey",
+                "params": [
+                    "nmbs",
+                    "{{ mnemonic }}",
+                    "{{ nmbs_public_key }}"
+                ]
+            }
+      register: insertion
+      until: insertion.status == 200
+      retries: 10
+      delay: 5
+
+    - name: show response
+      debug:
+        var: insertion
+
+    - name: add imon key to keystore
+      uri:
+        url: http://localhost:9933
+        method: "POST"
+        body_format: json
+        body: |
+            {
+                "jsonrpc":"2.0",
+                "id":1,
+                "method":"author_insertKey",
+                "params": [
+                    "imon",
+                    "{{ mnemonic }}",
+                    "{{ imon_public_key }}"
                 ]
             }
       register: insertion

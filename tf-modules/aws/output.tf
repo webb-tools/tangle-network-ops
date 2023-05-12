@@ -1,3 +1,3 @@
-output "collator_node_ip_address" {
-  value = aws_instance.collator_node_public.*.public_ip
+output "validator_node_ip_address" {
+  value = aws_instance.validator_node_public.*.public_ip
 }

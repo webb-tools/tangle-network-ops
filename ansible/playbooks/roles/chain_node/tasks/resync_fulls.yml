@@ -1,32 +1,32 @@
 
-- name: Stop Tangle collator service
-  when: "'collator_node' in group_names"
+- name: Stop Tangle standalone service
+  when: "'validator_node' in group_names"
   become: true
   systemd:
-    name: tangle-collator.service
+    name: tangle-standalone.service
     state: stopped
 
 - name: Purge chain
   become: true
-  when: "'collator_node' in group_names"
+  when: "'validator_node' in group_names"
   shell: |
     set -o pipefail
-    {{ tangle_bin }} purge-chain -y --chain "{{ tangle_user_home }}/resources/testnet/template-local-raw.json" --base-path {{ chain_data_dir }}  --database paritydb-experimental
+    {{ tangle_bin }} purge-chain -y --chain "{{ tangle_user_home }}/chainspecs/arana-local.json" --base-path {{ chain_data_dir }}  --database paritydb-experimental
   args:
     executable: /bin/bash
   changed_when: False
 
-- name: Reinstall Tangle systemd unit file (collator node)
-  template: src=tangle-collator-node.j2 dest=/etc/systemd/system/tangle-collator.service
+- name: Reinstall Tangle systemd unit file (validator node)
+  template: src=tangle-validator-node.j2 dest=/etc/systemd/system/tangle-standalone.service
   become: true
-  when: "'collator_node' in group_names"
+  when: "'validator_node' in group_names"
   vars:
-    peers: "{{ groups['collator_node'] }}"
+    peers: "{{ groups['validator_node'] }}"
   tags:
-    collator-node-service
+    validator-node-service
 
 # - name: start dkg service
-#   when: "'collator_node' in group_names"
+#   when: "'validator_node' in group_names"
 #   become: true
 #   systemd:
 #     name: dkg.service
